@@ -9,10 +9,10 @@ WIP
 Dap functions consist of a series of parameter definitions followed by a return value, and then by a evaluable block.  A simple definition is as follows;
 
 ```dap
-answer_to_life_the_universe_and_everything :: \() i32 -> 42;
+answer_to_life_the_universe_and_everything :: \() int _32 -> 42;
 
 // Any block is valid here.
-add :: \(a: i32, b: i32) i32 -> {
+add :: \(a: int _32, b: int _32) int _32 -> {
     // last value doesn't have a `;` to signify return.
     a + b
 };
@@ -31,14 +31,14 @@ In the case you have multiple return types you can return them through a tuple-l
 
 ```dap
 // You can use the short hand form too for parameter types
-div_and_rem :: \(a: i32, b: { i32 | _ != 0}) (i32, i32)
+div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}) (int _32, int _32)
 -> (a / b, a % b);
 ```
 
 If you name the return value, you don't need an explicit final value.
 
 ```dap
-div_and_rem :: \(a: i32, b: { i32 | _ != 0}) (div: i32, rem: i32)
+div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}) (div: int _32, rem: int _32)
 -> {
     div :: a / b;
     rem :: a % b;
@@ -50,7 +50,7 @@ div_and_rem :: \(a: i32, b: { i32 | _ != 0}) (div: i32, rem: i32)
 To avoid mistakes with returns you always have to specify the return type, the only exception is in the case when the function type has already been defined for example when you are passing the function to another function or have specified the type in the variable.  For example;
 
 ```
-div_and_rem : \(a: i32, b: { i32 | _ != 0 }) -> (div: i32, rem: i32)
+div_and_rem : \(a: int _32, b: { int _32 | _ != 0 }) -> (div: int _32, rem: int _32)
     : \(a, b) -> (div: a / b, rem: a % b);
 
 // and in a similar way if it's a single parameter with a known type
@@ -72,8 +72,8 @@ use std::fs::OpenOptions;
 
 struct Info<'a> {
     name: &'a str,
-    age: i32,
-    rating: i32,
+    age: int _32,
+    rating: int _32,
 }
 
 fn write_info(info: &Info) -> io::Result<()> {
@@ -100,8 +100,8 @@ use std::io::{File, Out};
 
 data Info {
     name: String;
-    age: i32;
-    rating: i32;
+    age: int _32;
+    rating: int _32;
 }
 
 write_info :: \(info: Info) Job -> {
@@ -172,10 +172,10 @@ Unlike functional languages like Haskell, you have significantly less control ov
 
 Typically, this makes no difference to the way you'll approach problems in Dap.  The major difference, however is with 'non-terminating resovable expressions' (i.e. infinite loops).  We'll avoid talking about the simplest case of non-termination, that is something that exits through a fatal or an exit (counts as non-termination since it's non-typical termination since the function never evaluates) since that's a trivial case to account for (we have the tag `@NoReturn` for this exact case).
 
-A classical infinite loop is a generator function, for example a counting iterator for all natural numbers (n > 0 given n is an i32).
+A classical infinite loop is a generator function, for example a counting iterator for all natural numbers (n > 0 given n is an int _32).
 
 ```
-natural_nums :: \() Job Coroutine[i32] -> {
+natural_nums :: \() Job Coroutine[int _32] -> {
     n :: 1;
     loop! {
         yield! n++;
