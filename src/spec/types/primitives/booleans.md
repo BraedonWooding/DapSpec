@@ -1,6 +1,14 @@
 # Booleans
 
-The boolean type has two defined values `true` and `false`.  Both are not unique keywords but are instead global values provided by the compiler.
+```
+view bool for Primitive, Comparable, LogicalOperators {
+    bitwise_or  @operator | for \(other: Self)[self: Self]: Self;
+    bitwise_and @operator & for \(other: Self)[self: Self]: Self;
+    bitwise_xor @operator ^ for \(other: Self)[self: Self]: Self;
+}
+```
+
+The boolean type `bool` has two defined values `true` and `false`.  Both are not unique keywords but are instead global values provided by the compiler.  The boolean type implements the following views; [Comparable], [Primitive], [LogicalOperators] and implementation operator overloads for the bitwise operators; `|`, `&`, `^` (since that `~` is not implemented the [BitwiseOperators] constraint isn't implemented).
 
 These global values exist in the `std:core:internal` package, which is implemented entirely internally by the compiler and can't be replicated in userspace.
 
@@ -10,10 +18,10 @@ The boolean type has a size of `1 byte` and an alignment of `1 byte`, the `false
 
 The following operations are defined on booleans and have their usual logical definition;
 
-- Logical OR (`|`)
-- Logical AND (`&`)
 - Logical NOT (`!`)
-- Logical XOR (`^`)
+- Bitwise OR (`|`)
+- Bitwise AND (`&`)
+- Bitwise XOR (`^`)
     - Which can be simply defined as just `!(a & b)`
     
 As well as the [lazy boolean operators] `&&` and `||`.
@@ -30,4 +38,4 @@ The compiler is allowed to introduce booleans that have internal bit patterns th
     - This does actually mean that the bitwise not operator is potentially equivalent to the logical not operator, granted that it would define `0` as false, and `-1`/(the maximum value for that word) as true.  In some cases, this could provide more optimal code that avoids multiple jumps (in cases where something like a `SETZ/XOR` aren't suitable).
 
 [malformed behaviour]: /spec/behaviour.md#malformed-behaviour
-[lazy boolean operators]: /spec/syntax/operators.md#boolean-operators
+[lazy boolean operators]: /spec/syntax/operators.md#lazy-boolean-operators

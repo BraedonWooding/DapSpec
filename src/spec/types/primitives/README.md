@@ -16,8 +16,22 @@ The following are all the current primitives that are defined in Dap.
 - [Numerical Vectors] — Specialised data structures that map to special processor instruction sets such as AVX/SSE
     - Not to be confused with `std::vector` from the C++ standard library
 
+## Primitive Constraint
+
+All primitives constrain to the following view:
+
+```
+view Primitive for ValueType, 
+{
+}
+```
+
+> This means that all primitives are [Value Types]
+
 [Numerics]: numerics.md
 [Booleans]: booleans.md
 [References]: references.md
 [Functions]: functions.md
 [Numerical Vectors]: numerical_vectors.md
+[Common Types and Views]: /spec/types/common_types_and_views.md
+[Value Types]: /spec/types/common_types_and_views.md#ValueType

@@ -2,17 +2,17 @@
 
 <div class="warning">
 
-WIP
+WIP: Needs rewriting
 
 </div>
 
 Dap functions consist of a series of parameter definitions followed by a return value, and then by a evaluable block.  A simple definition is as follows;
 
 ```dap
-answer_to_life_the_universe_and_everything :: \() int _32 -> 42;
+answer_to_life_the_universe_and_everything :: \(): int _32 -> 42;
 
 // Any block is valid here.
-add :: \(a: int _32, b: int _32) int _32 -> {
+add :: \(a: int _32, b: int _32): int _32 -> {
     // last value doesn't have a `;` to signify return.
     a + b
 };
@@ -23,7 +23,7 @@ add :: \(a: int _32, b: int _32) int _32 -> {
 Function parameters follow the typical rules for variable declarations and can have complex type definitions.  They can also have tags applied to either the type or the parameter name.
 
 ```dap
-divide :: \(a: f32.finite, b: { x: f32.finite | x != 0 }) f32.finite @Num.Flt.InPrecise(moreThan: {a, b})
+divide :: \(a: f32.finite, b: { x: f32.finite | x != 0 }): f32.finite @Num.Flt.InPrecise(moreThan: {a, b})
 -> a / b;
 ```
 
@@ -31,14 +31,14 @@ In the case you have multiple return types you can return them through a tuple-l
 
 ```dap
 // You can use the short hand form too for parameter types
-div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}) (int _32, int _32)
+div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}): (int _32, int _32)
 -> (a / b, a % b);
 ```
 
 If you name the return value, you don't need an explicit final value.
 
 ```dap
-div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}) (div: int _32, rem: int _32)
+div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}): (div: int _32, rem: int _32)
 -> {
     div :: a / b;
     rem :: a % b;
@@ -50,8 +50,8 @@ div_and_rem :: \(a: int _32, b: { int _32 | _ != 0}) (div: int _32, rem: int _32
 To avoid mistakes with returns you always have to specify the return type, the only exception is in the case when the function type has already been defined for example when you are passing the function to another function or have specified the type in the variable.  For example;
 
 ```
-div_and_rem : \(a: int _32, b: { int _32 | _ != 0 }) -> (div: int _32, rem: int _32)
-    : \(a, b) -> (div: a / b, rem: a % b);
+div_and_rem for \(a: int _32, b: { int _32 | _ != 0 }): (div: int _32, rem: int _32)
+    :: \(a, b) -> (div: a / b, rem: a % b);
 
 // and in a similar way if it's a single parameter with a known type
 // you can elide the parentheses
@@ -104,8 +104,8 @@ data Info {
     rating: int _32;
 }
 
-write_info :: \(info: Info) Job -> {
-    with file as File.open("my_best_friends.txt", .CREATE | .APPEND) -> try! {
+write_info :: \(info: Info): Job -> {
+    with file :: File.open("my_best_friends.txt", .CREATE | .APPEND) -> try! {
         // you would probably just do this in a single call... but you could do that
         // in the rust version too, so let's just keep it consistent.
         file.write_all $"name: {info.name}\n";
@@ -114,11 +114,11 @@ write_info :: \(info: Info) Job -> {
     };
 }
 
-with out = Out.lock() -> {
+with out := Out.lock() -> {
     try! write_info { name: "Chippie", age: 6, rating: 100 } else out.write($"{_}\n");
     try! write_info { name: "Amelia", age: 11, rating: 100 } else out.write($"{_}\n");
 
-    with file as File.open("my_best_friends.txt", .READ) -> unwrap {
+    with file :: File.open("my_best_friends.txt", .READ) unwrap {
         contents :: file.read_all;
         out.write($"{contents}\n");
     };
@@ -133,7 +133,7 @@ The major difference is the use of the `try` macro as opposed to the `?` symbol,
 - `unwrap` is simply just a function that is `unwrap :: \(x: Job[$T]) T -> try (x) else fatal($"Unwrap Failed: {_}\n")`
   - `$T` refers to a generic which will be discussed in more detail later in this documentation.
 - `try` has a more complicated definition and is a macro, the main reason why is due to the ability to chain multiple tries i.e. `try! (x) else try! (y) else try! (z) else out.write($"{_}\n")`.
-  - The definition is explained in the macros section but in the case of `try! (x) else out.write($"{_}\n")` roughly translates to `with res as x -> if (res.isOk) res.value else out.write($"{res.error}\n")`
+  - The definition is explained in the macros section but in the case of `try! (x) else out.write($"{_}\n")` roughly translates to `with (res :: x) if (res.isOk) res.value else out.write($"{res.error}\n")`
 
 ## Is everything a function?
 
@@ -175,7 +175,7 @@ Typically, this makes no difference to the way you'll approach problems in Dap. 
 A classical infinite loop is a generator function, for example a counting iterator for all natural numbers (n > 0 given n is an int _32).
 
 ```
-natural_nums :: \() Job Coroutine[int _32] -> {
+natural_nums :: \(): Job Coroutine[int _32] -> {
     n :: 1;
     loop! {
         yield! n++;

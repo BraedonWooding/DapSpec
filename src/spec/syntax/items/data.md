@@ -1,11 +1,11 @@
-# Data (Struct/Enums/Unions)
+# Record (Struct/Enums/Unions)
 
 Data is a general type in Dap that lets use specify multiple other types within it.
 
 The simplest form is it's `struct` form, where it represents a (potentially) hetrogeneous product of types, each of them having a name that together forms what is referred to as a field.
 
 ```
-data Point2D {
+record Point2D {
     x: int _32;
     y: int _32;
 }
@@ -16,7 +16,7 @@ data Point2D {
 The memory layout can be specified through a tag, `@Representation(padding?: int'bytes, alignment?: int'bytes, layout: Layout)`.  Memory layout can be specified on fields as well as the `data` object itself, for example the the following;
 
 ```
-data Example @Representation(padding: 4'bytes, alignment: 16'bytes, layout: .RAW_ORDER) {
+record Example @Representation(padding: 4'bytes, alignment: 16'bytes, layout: .RAW_ORDER) {
     a: int'32 @Representation(padding: 1'byte);
     // this puts the padding at 4 bytes (min of 4 in data and of 1 for a)
     // 'a' is aligned to 4 bytes though not 2

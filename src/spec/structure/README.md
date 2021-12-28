@@ -21,7 +21,8 @@ The following keywords exist and can't be used at all in code, these will be ref
 > KW_IF: `if`\
 > KW_ELSE: `else`\
 > KW_WHILE: `while`\
-> KW_DATA: `data`\
+> KW_RECORD: `record`\
+> KW_UNION: `union`\
 > KW_VIEW: `view`\
 > KW_PACKAGE: `package`\
 > KW_MATCH: `match`

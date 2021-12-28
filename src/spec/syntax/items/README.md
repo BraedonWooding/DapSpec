@@ -1,3 +1,3 @@
 # Items
 
-`Item`s are just the generic term for Dap's 'objects', these include only 2 user defined types; `Data` and `View`s.
+`Item`s are just the generic term for Dap's 'objects', these include only 3 user defined types; `Record`s, `Unions`s, and `View`s.
