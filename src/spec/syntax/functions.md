@@ -72,8 +72,8 @@ use std::fs::OpenOptions;
 
 struct Info<'a> {
     name: &'a str,
-    age: int _32,
-    rating: int _32,
+    age: i32,
+    rating: i32,
 }
 
 fn write_info(info: &Info) -> io::Result<()> {

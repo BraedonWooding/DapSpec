@@ -2,6 +2,12 @@
 
 - [Introduction](introduction/README.md)
     - [Installation](introduction/installation.md)
+    - [Goals](introduction/goals.md)
+    - [Comparisons](introduction/comparison/README.md)
+      - [Language - C](introduction/comparison/c.md)
+      - [Language - C++](introduction/comparison/cpp.md)
+      - [Language - Rust](introduction/comparison/rust.md)
+      - [Paradigm - OOP](introduction/comparison/oop.md)
 - [Contributors Guide](contribution/README.md)
     - [Building](contribution/building.md)
 - [Specification](spec/README.md)

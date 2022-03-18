@@ -7,7 +7,10 @@ ValueType is a compiler specified constraint which simply just means that any as
 Implicitly ValueTypes have the following extra constraints defined:
 
 ```
-view ValueType for Clone
+view ValueType
+{}
+
+view Clone for ValueType
 {
     clone :: \()[self] -> self;
 }
